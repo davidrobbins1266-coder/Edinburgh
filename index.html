@@ -4,59 +4,97 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Edinburgh Treasure Hunt (Bonham ↔ Castle)</title>
+  <title>Bonham ↔ Edinburgh Castle Treasure Hunt</title>
   <style>
-    :root { --bg:#0f172a; --panel:#111827; --text:#f8fafc; --muted:#cbd5e1; --primary:#2563eb; --danger:#ef4444; --ok:#16a34a; }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:linear-gradient(180deg,#0b1220,var(--bg));color:var(--text)}
-    header{position:sticky;top:0;padding:14px 16px;background:#0b1220cc;border-bottom:1px solid #ffffff14;backdrop-filter:blur(6px)}
-    .wrap{max-width:760px;margin:0 auto;padding:16px}
-    .card{background:var(--panel);border:1px solid #ffffff14;border-radius:14px;padding:16px}
-    h1{margin:0 0 6px;font-size:1.5rem}.subtitle{color:var(--muted);font-size:0.95rem}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-    button{border:0;border-radius:12px;padding:10px 14px;font-weight:600;color:#fff;background:var(--primary);cursor:pointer}
-    .btn-secondary{background:var(--danger)} .btn-ok{background:var(--ok)}
-    .panel{margin-top:12px;background:#ffffff08;border:1px dashed #ffffff22;border-radius:12px;padding:12px}
-    .progress{color:var(--muted);font-size:0.95rem}.clue{font-size:1.05rem;line-height:1.5}.hint{color:var(--muted);font-style:italic}
-    .badge{display:inline-block;background:#2563eb33;color:#fff;padding:6px 10px;border-radius:999px;margin:4px 6px 0 0;font-size:0.85rem}
-    .maplist a{display:block;color:#93c5fd;text-decoration:none;margin:6px 0}.maplist a:hover{text-decoration:underline}
-    .footer{color:var(--muted);font-size:0.9rem;margin-top:18px}
+    :root {
+      --bg: #0e1726; /* deep navy */
+      --panel: #111827; /* slate */
+      --text: #f9fafb; /* near white */
+      --muted: #cbd5e1; /* gray */
+      --accent: #ef4444; /* red */
+      --accent2: #22c55e; /* green */
+      --accent3: #3b82f6; /* blue */
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: linear-gradient(180deg, #0b1220, var(--bg));
+      color: var(--text);
+    }
+    header {
+      padding: 16px 20px;
+      background: rgba(17,24,39,0.8);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .wrap { max-width: 780px; margin: 0 auto; padding: 16px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    h1 { font-size: 1.6rem; margin: 0 0 8px; }
+    .subtitle { color: var(--muted); font-size: 0.95rem; }
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 4px; }
+    button, .btn {
+      appearance: none; border: none; border-radius: 12px; padding: 10px 14px;
+      font-weight: 600; color: #fff; cursor: pointer;
+      background: var(--accent3);
+      box-shadow: 0 6px 16px rgba(59,130,246,0.35);
+    }
+    .btn-secondary { background: var(--accent); box-shadow: 0 6px 16px rgba(239,68,68,0.35); }
+    .btn-ok { background: var(--accent2); box-shadow: 0 6px 16px rgba(34,197,94,0.35); }
+    .panel {
+      margin-top: 14px; background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,255,255,0.12); border-radius: 12px; padding: 12px;
+    }
+    .clue { font-size: 1.05rem; line-height: 1.5; }
+    .hint { color: var(--muted); font-style: italic; }
+    .progress { margin-top: 10px; font-size: 0.95rem; color: var(--muted); }
+    .badge { display: inline-block; background: rgba(59,130,246,0.2); color: #fff; padding: 6px 10px; border-radius: 999px; margin: 4px 6px 0 0; font-size: 0.85rem; }
+    .footer { color: var(--muted); font-size: 0.9rem; margin-top: 18px; }
+    .maplist a { display:block; color:#93c5fd; text-decoration:none; margin:8px 0; }
+    .maplist a:hover { text-decoration: underline; }
+    .timer { font-variant-numeric: tabular-nums; }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap">
-      <h1>Edinburgh Treasure Hunt: Bonham ↔ Castle</h1>
-      <div class="subtitle">Family-friendly · ~1 hour each way · Clues unlock one by one</div>
+      <h1>Bonham ↔ Edinburgh Castle Treasure Hunt</h1>
+      <div class="subtitle">Family-friendly, ~1 hour each way · Clues unlock one-by-one · Photo challenges + map links</div>
     </div>
   </header>
 
   <main class="wrap">
-    <div class="card">
-      <!-- Intro -->
-      <section id="intro">
-        <p>Start outside <strong>The Bonham Hotel</strong> (35 Drumsheugh Gardens). Tap <em>Start Hunt</em> to reveal the first clue. You can open map links directly from each clue.</p>
+    <div class="card" id="app">
+      <div id="intro">
+        <p>Welcome, explorers! Start outside <strong>The Bonham Hotel</strong> (35 Drumsheugh Gardens). Each clue guides you through streets, monuments and curious objects on the way to <strong>Edinburgh Castle</strong>, then back again. Tap <em>Start Hunt</em> to begin.</p>
         <div class="controls">
-          <button id="startBtn" type="button">Start Hunt</button>
-          <button id="toggleTimer" type="button" class="btn-secondary">Timer: Off</button>
+          <button id="startBtn">Start Hunt</button>
+          <button id="toggleTimer" class="btn-secondary">Timer: Off</button>
         </div>
         <div class="panel">
-          <div><strong>Quick map links</strong> (for reference):</div>
+          <div><strong>Map quick links</strong></div>
           <div class="maplist">
-            <a target="_blank" rel="noopener" href="https://wwwtel+EdinburghThe Bonham Hotel</a>
-            https://www.google.com/maps/search/?q=St+Andrew+Square+EdinburghSt Andrew Square</a>
-            <a target="_blank" rel/maps/search/?q=The+Balmoral+Hotel+Edinburgh+1+Princes+StreetThe Balmoral (clock tower)</a>
-            https://www.google.com/maps/search/?q=St+Giles%27+Cathedral+EdinburghSt Giles’ Cathedral & Heart of Midlothian</a>
-            https://www.google.com/maps/search/?q=Mercat+Cross+Edinburgh+High+StreetMercat Cross</a>
-            <a target="_blank" rel="noopener" href="https://www.googleburgh Castle</a>
-            <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?q=Floral+Clock+Princes+Street (Floral Clock)</a>
-            https://www.google.com/maps/search/?q=Scott+Monument+EdinburghScott Monument</a>
-            <a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?q=Randolph+C         </div>
+            <a target="_blank" href="https://maps.app.goo.gl/J2gJhn1iLQje1XPS8">The Bonham Hotel</a>
+            <a target="_blank" href="https://maps.app.goo.gl/3fYpWJqbaJgL7KBU8">St Andrew Square</a>
+            <a target="_blank" href="https://maps.app.goo.gl/2aJk3LQk2t6sTq9Z8">The Balmoral (clock tower)</a>
+            <a target="_blank" href="https://maps.app.goo.gl/tHPPeSg3FJHc5Qhy8">St Giles’ Cathedral & Heart of Midlothian</a>
+            <a target="_blank" href="https://maps.app.goo.gl/dqS5CuiPzJLyZcWn7">Mercat Cross</a>
+            <a target="_blank" href="https://maps.app.goo.gl/2b4W1u6TQv2g1hBy8">Edinburgh Castle</a>
+            <a target="_blank" href="https://maps.app.goo.gl/MFKjWk6b6fR8b8vPz">Princes Street Gardens (Floral Clock)</a>
+            <a target="_blank" href="https://maps.app.goo.gl/6m7A8oL9B1T3n9oS7">Scott Monument</a>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Play -->
-      <section id="play" hidden>
+      <div id="play" style="display:none">
         <div class="progress">
           <span id="legLabel">Outbound to Castle</span> · Clue <span id="clueNum">1</span>/<span id="clueTotal">?</span> · <span class="timer" id="timer">60:00</span>
         </div>
@@ -65,127 +103,225 @@
           <div class="hint" id="hintText"></div>
         </div>
         <div class="controls">
-          <button id="hintBtn" type="button" class="btn-secondary">Show hint</button>
-          <!-- Anchor prevents popup-blocking and ensures clickability -->
-          #Open map</a>
-          <button id="photoBtn" type="button" class="btn">Photo challenge</button>
-          <button id="doneBtn" type="button" class="btn-ok">Mark as done</button>
+          <button id="hintBtn" class="btn-secondary">Show hint</button>
+          <button id="mapBtn" class="btn">Open map</button>
+          <button id="photoBtn" class="btn">Photo challenge</button>
+          <button id="doneBtn" class="btn-ok">Mark as done</button>
         </div>
-        <div class="panel" id="photoPanel" hidden>
+        <div class="panel" id="photoPanel" style="display:none">
           <div><strong>Photo challenge:</strong> snap what the clue asks, or check it off.</div>
           <div class="controls" style="margin-top:8px">
-            <button id="photoDone" type="button" class="btn-ok">I took the photo</button>
-            <button id="photoSkip" type="button" class="btn-secondary">Skip</button>
+            <button id="photoDone" class="btn-ok">I took the photo</button>
+            <button id="photoSkip" class="btn-secondary">Skip</button>
           </div>
         </div>
         <div class="panel">
           <div><strong>Badges</strong></div>
           <div id="badges"></div>
         </div>
-      </section>
+      </div>
 
-      <!-- Finish -->
-      <section id="finish" hidden>
+      <div id="finish" style="display:none">
         <h2>🎉 Hunt complete!</h2>
         <p>You made it from The Bonham to Edinburgh Castle and back. Great exploring!</p>
         <div class="controls">
-          <button id="restartBtn" type="button">Restart</button>
+          <button id="restartBtn">Restart</button>
         </div>
-      </section>
+      </div>
 
-      <div class="footer">Tip: If crowds are heavy on the Royal Mile, use side lanes (Lady Stair’s Close, Advocate’s Close).</div>
+      <div class="footer">Tip: If crowds are heavy on the Royal Mile, use side lanes (Lady Stair’s Close, Advocate’s Close) to keep things moving.</div>
     </div>
   </main>
 
   <script>
-    // Ensure code runs after DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-      const legs = {
-        outbound: [
-          { clue: "Begin where elegance meets calm...", hint: "Start at Drumsheugh Gardens by The Bonham; head toward Randolph Place/Randolph Crescent.", map: "https://www.google.com/maps/search/?q=The+Bonham+Hotel+Edinburgh", photo: "Group selfie at The Bonham sign." },
-          { clue: "Seek the square that carries a saint’s name...", hint: "St Andrew Square; look for Robert Louis Stevenson statue.", map: "https://www.google.com/maps/search/?q=St+Andrew+Square+Edinburgh", photo: "Photo of the statue or any book in the square." },
-          { clue: "On George Street, find the palatial bank with a golden dome...", hint: "Royal Bank of Scotland building—grand frontage with columns.", map: "https://www.google.com/maps/search/?q=St+Andrew+Square+Edinburgh", photo: "Snap the dome or the columns." },
-          { clue: "Turn toward the prince’s avenue and walk to the clock tower that rules New Year...", hint: "Princes Street to The Balmoral clock; Heart of Midlothian by St Giles’ Cathedral.", map: "https://www.google.com/maps/search/?q=The+Balmoral+Hotel+Edinburgh+1+Princes+Street", photo: "Photo of the heart mosaic." },
-          { clue: "Near the heart stands a unicorn on the Mercat Cross...", hint: "Mercat Cross unicorn; head up the Royal Mile to Edinburgh Castle.", map: "https://www.google.com/maps/search/?q=Mercat+Cross+Edinburgh+High+Street", photo: "Photo with the unicorn or the Mercat Cross." },
-          { clue: "Inside the castle, find Scotland’s smallest chapel...", hint: "St Margaret’s Chapel.", map: "https://www.google.com/maps/search/?q=Edinburgh+Castle", photo: "Photo of the chapel exterior." }
-        ],
-        inbound: [
-          { clue: "Leave the castle and stroll past tartan and whisky...", hint: "Plenty of kilt/tartan shop signs along the Royal Mile.", map: "https://www.google.com/maps/search/?q=Edinburgh+Castle", photo: "Photo of a tartan display." },
-          { clue: "Descend to the gardens and find the floral clock...", hint: "Princes Street Gardens’ Floral Clock near the west end.", map: "https://www.google.com/maps/search/?q=Floral+Clock+Princes+Street+Gardens+Edinburgh", photo: "Photo of the floral clock." },
-          { clue: "A writer pierces the sky in gothic style...", hint: "Scott Monument by Princes Street.", map: "https://www.google.com/maps/search/?q=Scott+Monument+Edinburgh", photo: "Low-angle shot of the Scott Monument." },
-          { clue: "Curve back through crescents to reach your elegant origin...", hint: "Randolph Crescent area back toward Drumsheugh Gardens and The Bonham.", map: "https://www.google.com/maps/search/?q=Randolph+Crescent+Edinburgh", photo: "Final group photo at The Bonham." }
-        ]
-      };
+    const legs = {
+      outbound: [
+        {
+          clue: "Begin where elegance meets calm. Step outside and find the street with gardens and a famous Scottish painter’s legacy. Follow it east toward grand crescents.",
+          hint: "Start at Drumsheugh Gardens by The Bonham; head toward Randolph Place/Randolph Crescent.",
+          map: "https://maps.app.goo.gl/J2gJhn1iLQje1XPS8",
+          photo: "Group selfie at The Bonham sign."
+        },
+        {
+          clue: "Seek the square that carries a saint’s name and a statue of a writer who loved adventure. What’s his surname?",
+          hint: "St Andrew Square; look for Robert Louis Stevenson statue.",
+          map: "https://maps.app.goo.gl/3fYpWJqbaJgL7KBU8",
+          photo: "Photo of the statue or any book in the square."
+        },
+        {
+          clue: "On George Street, find the palatial bank with a golden dome. Count the columns and save the number.",
+          hint: "Royal Bank of Scotland building—grand frontage with columns.",
+          map: "https://maps.app.goo.gl/3fYpWJqbaJgL7KBU8",
+          photo: "Snap the dome or the columns."
+        },
+        {
+          clue: "Turn toward the prince’s avenue and walk to the clock tower that rules New Year. Beneath the Old Town, seek the city’s stone heart.",
+          hint: "Princes Street to The Balmoral clock; Old Town’s Heart of Midlothian set in the pavement by St Giles’ Cathedral.",
+          map: "https://maps.app.goo.gl/2aJk3LQk2t6sTq9Z8",
+          photo: "Photo of the heart mosaic (no spitting—it’s a tradition but we’ll pass!)."
+        },
+        {
+          clue: "Near the heart stands a unicorn on the Mercat Cross. Take a proud pose, then climb the castle hill where cannons sleep.",
+          hint: "Mercat Cross unicorn; head up the Royal Mile to Edinburgh Castle.",
+          map: "https://maps.app.goo.gl/dqS5CuiPzJLyZcWn7",
+          photo: "Photo with the unicorn or the Mercat Cross."
+        },
+        {
+          clue: "Inside the castle, find Scotland’s smallest chapel. Whisper its name to the wind before you turn back.",
+          hint: "St Margaret’s Chapel.",
+          map: "https://maps.app.goo.gl/2b4W1u6TQv2g1hBy8",
+          photo: "Photo of the chapel exterior."
+        }
+      ],
+      inbound: [
+        {
+          clue: "Leave the castle and stroll past tartan and whisky on the Royal Mile. Spot any kilt sign and name its colours.",
+          hint: "Plenty of kilt/tartan shop signs along the Royal Mile.",
+          map: "https://maps.app.goo.gl/2b4W1u6TQv2g1hBy8",
+          photo: "Photo of a tartan display."
+        },
+        {
+          clue: "Descend to the gardens and find the floral clock. What month does it show today?",
+          hint: "Princes Street Gardens’ Floral Clock near the west end.",
+          map: "https://maps.app.goo.gl/MFKjWk6b6fR8b8vPz",
+          photo: "Photo of the floral clock."
+        },
+        {
+          clue: "A writer pierces the sky in gothic style. Name the monument and take a dramatic angle shot.",
+          hint: "Scott Monument by Princes Street.",
+          map: "https://maps.app.goo.gl/6m7A8oL9B1T3n9oS7",
+          photo: "Low-angle shot of the Scott Monument."
+        },
+        {
+          clue: "Curve back through crescents to reach your elegant origin. Count the black doors on the crescent and declare the tally.",
+          hint: "Randolph Crescent area back toward Drumsheugh Gardens and The Bonham.",
+          map: "https://maps.app.goo.gl/J2gJhn1iLQje1XPS8",
+          photo: "Final group photo at The Bonham."
+        }
+      ]
+    };
 
-      const state = { leg: 'outbound', idx: 0, timerOn: false, secs: 60*60, badges: [] };
+    let state = {
+      leg: 'outbound',
+      idx: 0,
+      timerOn: false,
+      secs: 60*60,
+      badges: []
+    };
 
-      // Shortcuts
-      const $ = id => document.getElementById(id);
-      const elIntro = $('intro'), elPlay = $('play'), elFinish = $('finish');
-      const elClueText = $('clueText'), elHintText = $('hintText');
-      const elHintBtn = $('hintBtn'), elDoneBtn = $('doneBtn');
-      const elMapBtn = $('mapBtn'), elPhotoBtn = $('photoBtn');
-      const elPhotoPanel = $('photoPanel'), elPhotoDone = $('photoDone'), elPhotoSkip = $('photoSkip');
-      const elBadges = $('badges'), elClueNum = $('clueNum'), elClueTotal = $('clueTotal');
-      const elLegLabel = $('legLabel'), elTimer = $('timer'), elToggleTimer = $('toggleTimer');
+    const elIntro = document.getElementById('intro');
+    const elPlay = document.getElementById('play');
+    const elFinish = document.getElementById('finish');
+    const elStart = document.getElementById('startBtn');
+    const elRestart = document.getElementById('restartBtn');
+    const elClueText = document.getElementById('clueText');
+    const elHintText = document.getElementById('hintText');
+    const elHintBtn = document.getElementById('hintBtn');
+    const elDoneBtn = document.getElementById('doneBtn');
+    const elMapBtn = document.getElementById('mapBtn');
+    const elPhotoBtn = document.getElementById('photoBtn');
+    const elPhotoPanel = document.getElementById('photoPanel');
+    const elPhotoDone = document.getElementById('photoDone');
+    const elPhotoSkip = document.getElementById('photoSkip');
+    const elBadges = document.getElementById('badges');
+    const elClueNum = document.getElementById('clueNum');
+    const elClueTotal = document.getElementById('clueTotal');
+    const elLegLabel = document.getElementById('legLabel');
+    const elTimer = document.getElementById('timer');
+    const elToggleTimer = document.getElementById('toggleTimer');
 
-      function renderClue(){
-        const legArr = legs[state.leg];
-        const item = legArr[state.idx];
-        elClueText.textContent = item.clue;
-        elHintText.textContent = '';
-        elClueNum.textContent = String(state.idx + 1);
-        elClueTotal.textContent = String(legArr.length);
-        elLegLabel.textContent = state.leg === 'outbound' ? 'Outbound to Castle' : 'Return to Bonham';
-        elPhotoPanel.hidden = true;
-        // Update the anchor href (clickable map link)
-        elMapBtn.setAttribute('href', item.map);
-      }
-      function addBadge(text){
-        const span = document.createElement('span');
-        span.className = 'badge';
-        span.textContent = text;
-        elBadges.appendChild(span);
-        state.badges.push(text);
-      }
-      function nextClue(){
-        const legArr = legs[state.leg];
-        if(state.idx < legArr.length - 1){
-          state.idx += 1;
+    function renderClue(){
+      const legArr = legs[state.leg];
+      const item = legArr[state.idx];
+      elClueText.textContent = item.clue;
+      elHintText.textContent = '';
+      elClueNum.textContent = state.idx + 1;
+      elClueTotal.textContent = legArr.length;
+      elLegLabel.textContent = state.leg === 'outbound' ? 'Outbound to Castle' : 'Return to Bonham';
+      elPhotoPanel.style.display = 'none';
+    }
+    function openMap(){
+      const item = legs[state.leg][state.idx];
+      window.open(item.map, '_blank');
+    }
+    function showHint(){
+      elHintText.textContent = legs[state.leg][state.idx].hint;
+    }
+    function photoChallenge(){
+      const item = legs[state.leg][state.idx];
+      elPhotoPanel.style.display = 'block';
+      elPhotoPanel.querySelector('div').innerHTML = `<strong>Photo challenge:</strong> ${item.photo}`;
+    }
+    function addBadge(text){
+      const span = document.createElement('span');
+      span.className = 'badge';
+      span.textContent = text;
+      elBadges.appendChild(span);
+      state.badges.push(text);
+    }
+    function nextClue(){
+      const legArr = legs[state.leg];
+      if(state.idx < legArr.length - 1){
+        state.idx += 1;
+        renderClue();
+      } else {
+        if(state.leg === 'outbound'){
+          addBadge('🏰 Castle reached');
+          state.leg = 'inbound';
+          state.idx = 0;
+          state.secs = 60*60; // reset timer for inbound
           renderClue();
         } else {
-          if(state.leg === 'outbound'){
-            addBadge('🏰 Castle reached');
-            state.leg = 'inbound';
-            state.idx = 0;
-            state.secs = 60*60; // reset timer for inbound
-            renderClue();
-          } else {
-            addBadge('✅ Hunt complete');
-            elPlay.hidden = true;
-            elFinish.hidden = false;
-          }
+          addBadge('✅ Hunt complete');
+          elPlay.style.display = 'none';
+          elFinish.style.display = 'block';
         }
       }
-      let ticker;
-      function formatSecs(s){ const m = Math.floor(s/60), ss = String(s%60).padStart(2,'0'); return `${String(m).padStart(2,'0')}:${ss}`; }
-      function startTimer(){ clearInterval(ticker); ticker = setInterval(()=>{ if(!state.timerOn) return; state.secs = Math.max(0, state.secs-1); elTimer.textContent = formatSecs(state.secs); },1000); }
+    }
 
-      // Wire events (after DOM ready)
-      document.getElementById('startBtn').addEventListener('click', ()=>{
-        elIntro.hidden = true; elPlay.hidden = false; elFinish.hidden = true;
-        state.leg = 'outbound'; state.idx = 0; state.badges = []; state.secs = 60*60;
-        renderClue(); startTimer();
-      });
-      document.getElementById('restartBtn')?.addEventListener('click', ()=>{ elFinish.hidden = true; elIntro.hidden = false; });
-      elHintBtn.addEventListener('click', ()=>{ elHintText.textContent = legs[state.leg][state.idx].hint; });
-      elPhotoBtn.addEventListener('click', ()=>{ const item = legs[state.leg][state.idx]; elPhotoPanel.hidden = false; elPhotoPanel.querySelector('div').innerHTML = `<strong>Photo challenge:</strong> ${item.photo}`; });
-      elPhotoDone.addEventListener('click', ()=>{ addBadge('📸 Photo taken'); elPhotoPanel.hidden = true; });
-      elPhotoSkip.addEventListener('click', ()=>{ elPhotoPanel.hidden = true; });
-      elDoneBtn.addEventListener('click', ()=>{ addBadge('🧩 Clue solved'); nextClue(); });
-      elToggleTimer.addEventListener('click', ()=>{ state.timerOn = !state.timerOn; elToggleTimer.textContent = `Timer: ${state.timerOn ? 'On' : 'Off'}`; if(state.timerOn) startTimer(); });
-           elTimer.textContent = formatSecs(state.secs);
+    let ticker;
+    function formatSecs(s){
+      const m = Math.floor(s/60), ss = String(s%60).padStart(2,'0');
+      return `${String(m).padStart(2,'0')}:${ss}`;
+    }
+    function startTimer(){
+      clearInterval(ticker);
+      ticker = setInterval(()=>{
+        if(!state.timerOn) return;
+        state.secs = Math.max(0, state.secs-1);
+        elTimer.textContent = formatSecs(state.secs);
+      }, 1000);
+    }
+
+    elStart.addEventListener('click', ()=>{
+      elIntro.style.display = 'none';
+      elPlay.style.display = 'block';
+      state.leg = 'outbound';
+      state.idx = 0;
+      state.badges = [];
+      state.secs = 60*60;
+      renderClue();
+      startTimer();
     });
+    elRestart && elRestart.addEventListener('click', ()=>{
+      elFinish.style.display = 'none';
+      elIntro.style.display = 'block';
+    });
+    elHintBtn.addEventListener('click', showHint);
+    elMapBtn.addEventListener('click', openMap);
+    elPhotoBtn.addEventListener('click', photoChallenge);
+    elPhotoDone.addEventListener('click', ()=>{ addBadge('📸 Photo taken'); elPhotoPanel.style.display='none'; });
+    elPhotoSkip.addEventListener('click', ()=>{ elPhotoPanel.style.display='none'; });
+    elDoneBtn.addEventListener('click', ()=>{ addBadge('🧩 Clue solved'); nextClue(); });
+
+    elToggleTimer.addEventListener('click', ()=>{
+      state.timerOn = !state.timerOn;
+      elToggleTimer.textContent = `Timer: ${state.timerOn ? 'On' : 'Off'}`;
+      if(state.timerOn) startTimer();
+    });
+
+    // Initialize timer label
+    elTimer.textContent = formatSecs(state.secs);
   </script>
 </body>
-
+</html>
